@@ -1,3 +1,9 @@
 a	->	 sandwich top with no bottom
 b	->	 sandwich bottom with no top
 b	->	 sandwich bottom with no top
+a	->	 sandwich top with no bottom
+b	->	 sandwich bottom with no top
+b	->	 sandwich bottom with no top
+a	->	 sandwich top with no bottom
+b	->	 sandwich bottom with no top
+b	->	 sandwich bottom with no top

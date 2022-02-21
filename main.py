@@ -59,7 +59,7 @@ class ErrorAnalyzer:
         return False
 
     @staticmethod
-    def amount_of_same_error(log):
+    def amount_of_same_error(log):  # ye TODO: need to add filter for time and variables!!!
         with open(log, 'r') as l:
             error_lines = l.readlines()
             counter = dict(Counter(error_lines))
