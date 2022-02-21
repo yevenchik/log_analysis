@@ -68,15 +68,15 @@ class ErrorAnalyzer:
                     count_result.write("{} = {}\n".format(re.sub('\n', '', key), counter[key]))
 
     @staticmethod
-    def merge_logs(logs):
+    def merge_logs(logs, merged_log_name):
         merged_log = ''
         for log in logs:
             merged_log = ErrorAnalyzer.merge_single_log(log, merged_log)
-        ErrorAnalyzer.final_log_merge(merged_log)
+        ErrorAnalyzer.final_log_merge(merged_log, merged_log_name)
 
     @staticmethod
-    def final_log_merge(merged_log):
-        with open('merged_log.txt', 'a') as merged:
+    def final_log_merge(merged_log, merged_log_name):
+        with open(merged_log_name, 'a') as merged:
             merged.write(merged_log)
 
     @staticmethod
@@ -110,7 +110,8 @@ def json_loader(json):
 
 if __name__ == '__main__':
     e = ErrorAnalyzer()
-    e.merge_logs(['1.txt', '2.txt'])
+    e.merge_logs(['1.txt', '2.txt'],'merged_log.txt')
     e.amount_of_same_error('merged_log.txt')
-    #  e.sandwich_checker('merged_log.txt', '5', '7', '6')
+    e.sandwich_checker('merged_log.txt', '5', '7', '6')
     e.sandwich_checker('merged_log.txt', 'a', 'b')
+    e.merge_logs(['result_summary.txt', 'error_count.txt'], 'final_result.txt')
