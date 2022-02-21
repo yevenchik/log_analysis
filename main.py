@@ -12,24 +12,36 @@ class ErrorAnalyzer:
             top_index = 0
             bottom_index = 0
             for i in range(len(log_as_list)):
-                if top in log_as_list[i]:
-                    top_counter += 1
-                    top_index = i
-                    if top_counter > bottom_counter + 1:
-                        ErrorAnalyzer.log_summary(top + "\t->\t sandwich top with no bottom\n")
-                        top_counter -= 1
-                if bottom in log_as_list[i]:
-                    bottom_counter += 1
-                    bottom_index = i
-                    if top_counter < bottom_counter:
-                        ErrorAnalyzer.log_summary(bottom + "\t->\t sandwich bottom with no top\n")
-                        bottom_counter -= 1
-                    elif filling:
-                        ErrorAnalyzer.handle_filling_check(bottom_index, filling, log_as_list, top_index)
+                top_counter, top_index = ErrorAnalyzer.handle_top(bottom_counter, i, log_as_list, top, top_counter,
+                                                                  top_index)
+                bottom_counter = ErrorAnalyzer.handle_bottom(bottom, bottom_counter, filling, i, log_as_list,
+                                                             top_counter, top_index)
             if top_counter > bottom_counter:
                 ErrorAnalyzer.log_summary(top + "\t->\t sandwich top with no bottom\n")
                 if filling:
                     ErrorAnalyzer.handle_filling_check(len(log_as_list), filling, log_as_list, top_index)
+
+    @staticmethod
+    def handle_bottom(bottom, bottom_counter, filling, i, log_as_list, top_counter, top_index):
+        if bottom in log_as_list[i]:
+            bottom_counter += 1
+            bottom_index = i
+            if top_counter < bottom_counter:
+                ErrorAnalyzer.log_summary(bottom + "\t->\t sandwich bottom with no top\n")
+                bottom_counter -= 1
+            elif filling:
+                ErrorAnalyzer.handle_filling_check(bottom_index, filling, log_as_list, top_index)
+        return bottom_counter
+
+    @staticmethod
+    def handle_top(bottom_counter, i, log_as_list, top, top_counter, top_index):
+        if top in log_as_list[i]:
+            top_counter += 1
+            top_index = i
+            if top_counter > bottom_counter + 1:
+                ErrorAnalyzer.log_summary(top + "\t->\t sandwich top with no bottom\n")
+                top_counter -= 1
+        return top_counter, top_index
 
     @staticmethod
     def handle_filling_check(bottom_index, filling, log_as_list, top_index):
@@ -100,4 +112,5 @@ if __name__ == '__main__':
     e = ErrorAnalyzer()
     e.merge_logs(['1.txt', '2.txt'])
     e.amount_of_same_error('merged_log.txt')
-    e.sandwich_checker('merged_log.txt', '5', '7', '6')
+    #  e.sandwich_checker('merged_log.txt', '5', '7', '6')
+    e.sandwich_checker('merged_log.txt', 'a', 'b')
