@@ -1,0 +1,7 @@
+5	->	 sandwich top with no bottom
+5	->	 sandwich top with no bottom
+6	->	 filling not found
+6	->	 filling found
+6	->	 filling not found
+5	->	 sandwich top with no bottom
+6	->	 filling not found
