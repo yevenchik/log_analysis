@@ -60,9 +60,9 @@ class ErrorAnalyzer:
 
     @staticmethod
     def amount_of_same_error(log):  # ye TODO: need to add filter for time and variables!!!
-        with open(log, 'r') as l:
-            error_lines = l.readlines()
-            counter = dict(Counter(error_lines))
+        with open(log, 'r') as lines:
+            log_lines = lines.readlines()
+            counter = dict(Counter(log_lines))
             with open('error_count.txt', 'w') as count_result:
                 for key in counter.keys():
                     count_result.write("{} = {}\n".format(re.sub('\n', '', key), counter[key]))
@@ -110,7 +110,7 @@ def json_loader(json):
 
 if __name__ == '__main__':
     e = ErrorAnalyzer()
-    e.merge_logs(['1.txt', '2.txt'],'merged_log.txt')
+    e.merge_logs(['1.txt', '2.txt'], 'merged_log.txt')
     e.amount_of_same_error('merged_log.txt')
     e.sandwich_checker('merged_log.txt', '5', '7', '6')
     e.sandwich_checker('merged_log.txt', 'a', 'b')
