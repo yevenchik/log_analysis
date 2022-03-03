@@ -103,14 +103,29 @@ class ErrorAnalyzer:
             result.write(results)
 
     @staticmethod
-    def log_to_csv(merged_log):
-        parsed = merged_log.split("|", 1)
-        second_parse = parsed[1]
-        parsed = [parsed[0]]
+    def parse_one_log(a_log):
+        parsed = a_log.split("|", 1)
+        second_parse = parsed[-1]
+        parsed.pop()
         parsed += second_parse.split('    ', 2)
-        with open('test.csv', 'a') as csvfile:
+        second_parse = parsed[-1]
+        parsed.pop()
+        parsed += second_parse.split('|', 1)
+        second_parse = parsed[-1]
+        parsed.pop()
+        parsed += second_parse.split('^', 2)
+        return parsed
+        # with open('test.csv', 'a') as csvfile:
+        #    writer = csv.writer(csvfile)
+        #    writer.writerow(parsed)
+
+    @staticmethod
+    def log_to_csv(merged_log):
+        to_log = []
+        [to_log.append(ErrorAnalyzer().parse_one_log(log)) for log in merged_log]
+        with open('test.csv', 'w', newline='') as csvfile:
             writer = csv.writer(csvfile)
-            writer.writerow(parsed)
+            writer.writerows(to_log)
 
 
 def json_loader(json):
@@ -125,4 +140,6 @@ if __name__ == '__main__':
     #e.sandwich_checker('merged_log.txt', '5', '7', '6')
     #e.sandwich_checker('merged_log.txt', 'a', 'b')
     #e.merge_logs(['result_summary.txt', 'error_count.txt'], 'final_result.txt')
-    e.log_to_csv('$2015-01-01 00:01:41,239| ( 0)|INFO|L-88252061    S-0    .internalInit()|SharedMem_Map.cpp^340^[SharedMemMap] Shared memory map found!')
+    with open('./logs/DB_Manager_SWIR_01-01-2015_00-01-41.1', 'r') as lines:
+        log_lines = lines.readlines()
+        e.log_to_csv(log_lines)
