@@ -1,6 +1,6 @@
 from collections import Counter
 import re
-
+import csv
 
 class ErrorAnalyzer:
     @staticmethod
@@ -102,6 +102,16 @@ class ErrorAnalyzer:
         with open('result_summary.txt', 'a') as result:
             result.write(results)
 
+    @staticmethod
+    def log_to_csv(merged_log):
+        parsed = merged_log.split("|", 1)
+        second_parse = parsed[1]
+        parsed = [parsed[0]]
+        parsed += second_parse.split('    ', 2)
+        with open('test.csv', 'a') as csvfile:
+            writer = csv.writer(csvfile)
+            writer.writerow(parsed)
+
 
 def json_loader(json):
     pass
@@ -110,8 +120,9 @@ def json_loader(json):
 
 if __name__ == '__main__':
     e = ErrorAnalyzer()
-    e.merge_logs(['1.txt', '2.txt'], 'merged_log.txt')
-    e.amount_of_same_error('merged_log.txt')
-    e.sandwich_checker('merged_log.txt', '5', '7', '6')
-    e.sandwich_checker('merged_log.txt', 'a', 'b')
-    e.merge_logs(['result_summary.txt', 'error_count.txt'], 'final_result.txt')
+    #e.merge_logs(['./logs/DB_Manager_SWIR_01-01-2015_00-01-41.1', './logs/DB_Manager_SWIR_01-01-2015_00-01-41.2'], 'merged_log.txt')
+    #e.amount_of_same_error('merged_log.txt')
+    #e.sandwich_checker('merged_log.txt', '5', '7', '6')
+    #e.sandwich_checker('merged_log.txt', 'a', 'b')
+    #e.merge_logs(['result_summary.txt', 'error_count.txt'], 'final_result.txt')
+    e.log_to_csv('$2015-01-01 00:01:41,239| ( 0)|INFO|L-88252061    S-0    .internalInit()|SharedMem_Map.cpp^340^[SharedMemMap] Shared memory map found!')
